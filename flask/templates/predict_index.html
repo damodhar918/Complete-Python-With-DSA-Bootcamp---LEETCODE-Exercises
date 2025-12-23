@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data Prediction & Analysis App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/predict_style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📊 CSV Data Prediction & Analysis</h1>
+            <p>Upload CSV, analyze data, and train ML models</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('upload')">📁 Upload</button>
+            <button class="tab-btn" onclick="switchTab('analysis')">📈 Analysis</button>
+            <button class="tab-btn" onclick="switchTab('training')">🤖 Train Model</button>
+            <button class="tab-btn" onclick="switchTab('predict')">🔮 Predict</button>
+        </div>
+
+        <!-- Upload Tab -->
+        <div id="upload" class="tab-content active">
+            <div class="card">
+                <h2>Upload CSV File</h2>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📤</div>
+                    <p>Drag & drop CSV file here or click to select</p>
+                    <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                </div>
+                <div id="uploadStatus" class="status"></div>
+                
+                <!-- File Preview -->
+                <div id="filePreview" style="display: none;">
+                    <h3>File Preview</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Filename:</strong>
+                            <span id="previewFilename"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Shape:</strong>
+                            <span id="previewShape"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Rows:</strong>
+                            <span id="previewRows"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Columns:</strong>
+                            <span id="previewCols"></span>
+                        </div>
+                    </div>
+                    <h4>Data Types</h4>
+                    <div id="dtypesList" class="type-list"></div>
+                    <h4>Missing Values</h4>
+                    <div id="nullList" class="null-list"></div>
+                    <h4>Data Sample</h4>
+                    <div id="dataSample" class="table-scroll"></div>
+                    <h4>Statistics</h4>
+                    <div id="statistics" class="table-scroll"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Tab -->
+        <div id="analysis" class="tab-content">
+            <div class="card">
+                <h2>Data Analysis</h2>
+                <button class="btn btn-primary" onclick="analyzeData()">Analyze Data</button>
+                <div id="analysisResults" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <!-- Training Tab -->
+        <div id="training" class="tab-content">
+            <div class="card">
+                <h2>Train ML Model</h2>
+                <div class="form-group">
+                    <label for="modelType">Model Type:</label>
+                    <select id="modelType" onchange="updateTargetOptions()">
+                        <option value="regression">Regression</option>
+                        <option value="classification">Classification</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetColumn">Target Column:</label>
+                    <select id="targetColumn"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Feature Columns:</label>
+                    <div id="featuresList" class="checkbox-group"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="testSize">Test Size (%):</label>
+                    <input type="number" id="testSize" value="20" min="5" max="50">
+                </div>
+
+                <button class="btn btn-primary" onclick="trainModel()">Train Model</button>
+                <div id="trainingStatus" class="status"></div>
+
+                <!-- Results -->
+                <div id="trainingResults" style="display: none; margin-top: 30px;">
+                    <h3>Model Performance</h3>
+                    <div id="performanceMetrics" class="metrics-grid"></div>
+                    <h3>Feature Importance</h3>
+                    <canvas id="featureChart"></canvas>
+                    <h3>Predictions Sample</h3>
+                    <table class="predictions-table">
+                        <thead>
+                            <tr>
+                                <th>Actual</th>
+                                <th>Predicted</th>
+                            </tr>
+                        </thead>
+                        <tbody id="predictionsSample"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Predict Tab -->
+        <div id="predict" class="tab-content">
+            <div class="card">
+                <h2>Make Predictions</h2>
+                
+                <!-- Single Prediction -->
+                <div class="prediction-section">
+                    <h3>Single Prediction</h3>
+                    <div id="singlePredictForm" class="form-grid"></div>
+                    <button class="btn btn-primary" onclick="predictSingle()">Predict</button>
+                    <div id="singlePredictResult" class="result-box"></div>
+                </div>
+
+                <!-- Batch Prediction -->
+                <div class="prediction-section">
+                    <h3>Batch Prediction</h3>
+                    <div class="upload-area" id="batchUploadArea">
+                        <div class="upload-icon">📤</div>
+                        <p>Upload CSV for batch predictions</p>
+                        <input type="file" id="batchFileInput" accept=".csv" style="display: none;">
+                    </div>
+                    <button class="btn btn-primary" onclick="predictBatch()">Predict Batch</button>
+                    <div id="batchPredictResult" class="result-box"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 CSV Prediction & Analysis App | Built with Flask, Jinja, scikit-learn & JavaScript</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

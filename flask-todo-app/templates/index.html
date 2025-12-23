@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Todo App{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="mb-4 text-center">My Todos</h1>
+        
+        {% if todos %}
+            <div class="todo-list">
+                {% for todo in todos %}
+                    <div class="card mb-3 todo-item {% if todo.completed %}completed{% endif %}">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input class="form-check-input todo-checkbox" type="checkbox" id="todo{{ todo.id }}" 
+                                               {% if todo.completed %}checked{% endif %}
+                                               onchange="location.href='{{ url_for('toggle_todo', id=todo.id) }}'">
+                                        <label class="form-check-label {% if todo.completed %}text-decoration-line-through text-muted{% endif %}" for="todo{{ todo.id }}">
+                                            <h5 class="card-title mb-1">{{ todo.title }}</h5>
+                                            {% if todo.description %}
+                                                <p class="card-text text-muted">{{ todo.description }}</p>
+                                            {% endif %}
+                                            <small class="text-muted">Created: {{ todo.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <a href="{{ url_for('edit_todo', id=todo.id) }}" class="btn btn-sm btn-warning me-2">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                    <a href="{{ url_for('delete_todo', id=todo.id) }}" class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('Are you sure?');">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                <h4 class="alert-heading">No todos yet!</h4>
+                <p>Create your first todo to get started.</p>
+                <a href="{{ url_for('add_todo') }}" class="btn btn-primary">Create Todo</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
