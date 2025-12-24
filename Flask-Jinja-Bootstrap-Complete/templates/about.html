@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}About - Flask Blog{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4"><i class="fas fa-info-circle"></i> About Flask Blog</h1>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>Welcome to Our Community</h3>
+                    <p class="lead">Flask Blog is a modern platform for sharing ideas and connecting with readers worldwide.</p>
+                    
+                    <h4 class="mt-4">Our Mission</h4>
+                    <p>
+                        We believe in the power of storytelling and the importance of having a voice. 
+                        Flask Blog provides a simple, elegant platform for anyone to share their thoughts, 
+                        expertise, and creativity with the world.
+                    </p>
+                    
+                    <h4 class="mt-4">What We Offer</h4>
+                    <ul>
+                        <li><strong>Easy Publishing:</strong> Write and publish posts in minutes</li>
+                        <li><strong>Community Engagement:</strong> Comment and discuss with other writers</li>
+                        <li><strong>User Profiles:</strong> Build your personal brand and following</li>
+                        <li><strong>Categories:</strong> Organize content by topic</li>
+                        <li><strong>Analytics:</strong> Track your posts' performance</li>
+                        <li><strong>Newsletter:</strong> Stay updated with the latest content</li>
+                    </ul>
+                    
+                    <h4 class="mt-4">Technology Stack</h4>
+                    <p>Flask Blog is built with modern web technologies:</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Backend:</strong> Flask & Python</li>
+                                <li><strong>Database:</strong> SQLAlchemy & SQLite</li>
+                                <li><strong>Authentication:</strong> Flask-Login</li>
+                                <li><strong>Forms:</strong> Flask-WTF</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li><strong>Frontend:</strong> Bootstrap 5</li>
+                                <li><strong>Templating:</strong> Jinja2</li>
+                                <li><strong>Icons:</strong> Font Awesome</li>
+                                <li><strong>API:</strong> RESTful JSON</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mt-4">Key Features</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-pen text-primary"></i> Write Posts</h5>
+                                    <p>Create rich blog posts with categories and tags</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-comments text-success"></i> Engage</h5>
+                                    <p>Comment and discuss with the community</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-user text-info"></i> Profile</h5>
+                                    <p>Build your author profile and showcase</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-chart-line text-warning"></i> Analytics</h5>
+                                    <p>Track views and engagement metrics</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

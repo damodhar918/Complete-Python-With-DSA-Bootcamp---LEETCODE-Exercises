@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Flask Blog{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1 class="display-4 mb-3">Welcome to Flask Blog</h1>
+        <p class="lead mb-4">Share your thoughts with the world. Write, publish, and engage with our community.</p>
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-2">
+                <i class="fas fa-user-plus"></i> Get Started
+            </a>
+        {% else %}
+            <a href="{{ url_for('create_post') }}" class="btn btn-light btn-lg me-2">
+                <i class="fas fa-pen"></i> Write a Post
+            </a>
+        {% endif %}
+        <a href="{{ url_for('posts_list') }}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-book"></i> Read Blog
+        </a>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="container mb-5">
+    <div class="row text-center">
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-primary mb-2">{{ stats.total_users }}</h2>
+                    <p class="text-muted mb-0"><i class="fas fa-users"></i> Active Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-success mb-2">{{ stats.total_posts }}</h2>
+                    <p class="text-muted mb-0"><i class="fas fa-file-alt"></i> Blog Posts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-info mb-2">{{ stats.total_comments }}</h2>
+                    <p class="text-muted mb-0"><i class="fas fa-comments"></i> Comments</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-warning mb-2">{{ stats.subscribers }}</h2>
+                    <p class="text-muted mb-0"><i class="fas fa-envelope"></i> Subscribers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Posts Section -->
+<div class="container mb-5">
+    <h2 class="mb-4"><i class="fas fa-star"></i> Featured Posts</h2>
+    <div class="row">
+        {% if featured_posts %}
+            {% for post in featured_posts %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text flex-grow-1">{{ post.content[:100] }}...</p>
+                            <div class="mb-3">
+                                <span class="badge bg-primary">{{ post.category }}</span>
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-eye"></i> {{ post.views }}
+                                </span>
+                            </div>
+                            <small class="text-muted">
+                                By <strong>{{ post.author.username }}</strong> on 
+                                {{ post.created_at | datetimeformat('%B %d, %Y') }}
+                            </small>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{{ url_for('view_post', post_id=post.id) }}" class="btn btn-primary btn-sm w-100">
+                                <i class="fas fa-arrow-right"></i> Read More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No posts yet. <a href="{{ url_for('create_post') }}">Be the first to write one!</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="bg-light py-5 mb-5">
+    <div class="container">
+        <h2 class="text-center mb-5"><i class="fas fa-sparkles"></i> Why Choose Our Blog?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="text-center">
+                    <i class="fas fa-feather fa-3x text-primary mb-3"></i>
+                    <h5>Easy to Use</h5>
+                    <p>Intuitive interface for writing and publishing posts</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="text-center">
+                    <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                    <h5>Secure</h5>
+                    <p>Your content and data are protected with encryption</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="text-center">
+                    <i class="fas fa-mobile-alt fa-3x text-info mb-3"></i>
+                    <h5>Responsive</h5>
+                    <p>Works perfectly on all devices and screen sizes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="bg-primary text-white py-5 mb-5">
+    <div class="container text-center">
+        <h3 class="mb-3">Join Our Community Today</h3>
+        <p class="lead mb-4">Start sharing your stories and connect with readers worldwide</p>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('create_post') }}" class="btn btn-light btn-lg">
+                <i class="fas fa-pen"></i> Write Your First Post
+            </a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-2">
+                <i class="fas fa-user-plus"></i> Sign Up Now
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Posts - Flask Blog{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h1><i class="fas fa-book"></i> Blog Posts</h1>
+        <p class="lead text-muted">Explore articles from our community</p>
+    </div>
+    
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="GET" class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search posts..." 
+                       value="{{ search }}">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" onchange="location = '/posts?category=' + this.value + '{% if search %}&search={{ search }}{% endif %}';">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat[0] }}" {% if category == cat[0] %}selected{% endif %}>
+                        {{ cat[0] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    <!-- Posts List -->
+    <div class="row">
+        {% if posts.items %}
+            {% for post in posts.items %}
+                <div class="col-md-8 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title mb-0">{{ post.title }}</h5>
+                                <span class="badge bg-primary">{{ post.category }}</span>
+                            </div>
+                            
+                            <p class="card-text text-muted">{{ post.content[:150] }}...</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-user"></i>
+                                    <a href="{{ url_for('user_profile', username=post.author.username) }}" 
+                                       class="text-decoration-none">{{ post.author.username }}</a>
+                                    <span class="ms-2"><i class="fas fa-calendar"></i> {{ post.created_at | datetimeformat('%b %d, %Y') }}</span>
+                                    <span class="ms-2"><i class="fas fa-eye"></i> {{ post.views }} views</span>
+                                    <span class="ms-2"><i class="fas fa-comments"></i> {{ post.comments|length }} comments</span>
+                                </small>
+                                <a href="{{ url_for('view_post', post_id=post.id) }}" class="btn btn-sm btn-primary">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-8">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No posts found. Try different search terms.
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="sidebar">
+                <h5 class="mb-3"><i class="fas fa-filter"></i> Categories</h5>
+                <div class="list-group list-group-flush">
+                    <a href="{{ url_for('posts_list') }}" class="list-group-item list-group-item-action">
+                        All Posts
+                    </a>
+                    {% for cat in categories %}
+                        <a href="{{ url_for('posts_list', category=cat[0]) }}" 
+                           class="list-group-item list-group-item-action {% if category == cat[0] %}active{% endif %}">
+                            {{ cat[0] }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    {% if posts.pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if posts.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('posts_list', page=posts.prev_num, category=category, search=search) }}">
+                            Previous
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for page_num in posts.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num == posts.page %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('posts_list', page=page_num, category=category, search=search) }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('posts_list', page=posts.next_num, category=category, search=search) }}">
+                            Next
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

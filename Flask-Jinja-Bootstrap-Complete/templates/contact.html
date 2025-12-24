@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Flask Blog{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="mb-4 text-center"><i class="fas fa-envelope"></i> Contact Us</h1>
+            
+            <div class="card">
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   placeholder="Your name" required>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   placeholder="your@email.com" required>
+                        </div>
+                        
+                        <!-- Subject -->
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" name="subject" 
+                                   placeholder="What is this about?" required>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="6" 
+                                      placeholder="Your message here..." required></textarea>
+                        </div>
+                        
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="mt-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5><i class="fas fa-map-marker-alt"></i> Address</h5>
+                        <p>123 Blog Street, Web City, WC 12345</p>
+                        
+                        <h5 class="mt-3"><i class="fas fa-phone"></i> Phone</h5>
+                        <p><a href="tel:+1234567890">+1 (234) 567-890</a></p>
+                        
+                        <h5 class="mt-3"><i class="fas fa-envelope"></i> Email</h5>
+                        <p><a href="mailto:info@flaskblog.com">info@flaskblog.com</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

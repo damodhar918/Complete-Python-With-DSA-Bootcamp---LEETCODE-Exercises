@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Create Post - Flask Blog{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4"><i class="fas fa-pen"></i> Create New Post</h1>
+            
+            <div class="card">
+                <div class="card-body p-4">
+                    <form method="POST" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Title -->
+                        <div class="mb-3">
+                            <label for="{{ form.title.id }}" class="form-label">Post Title</label>
+                            {% if form.title.errors %}
+                                {{ form.title(class="form-control is-invalid") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.title.errors %}
+                                        <i class="fas fa-exclamation-circle"></i> {{ error }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.title(class="form-control", placeholder="Enter an engaging title...") }}
+                            {% endif %}
+                            <small class="form-text text-muted">5-200 characters</small>
+                        </div>
+                        
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label for="{{ form.category.id }}" class="form-label">Category</label>
+                            {{ form.category(class="form-select") }}
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="mb-3">
+                            <label for="{{ form.content.id }}" class="form-label">Content</label>
+                            {% if form.content.errors %}
+                                {{ form.content(class="form-control is-invalid", rows="10") }}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.content.errors %}
+                                        <i class="fas fa-exclamation-circle"></i> {{ error }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.content(class="form-control", rows="10", placeholder="Write your content here...") }}
+                            {% endif %}
+                            <small class="form-text text-muted">Minimum 10 characters</small>
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Publish Post
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
